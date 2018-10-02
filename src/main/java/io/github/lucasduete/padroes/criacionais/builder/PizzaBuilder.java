@@ -2,6 +2,8 @@ package io.github.lucasduete.padroes.criacionais.builder;
 
 import io.github.lucasduete.padroes.criacionais.builder.enums.IngrendienteEnum;
 import io.github.lucasduete.padroes.criacionais.builder.enums.TipoMassaEnum;
+import io.github.lucasduete.padroes.criacionais.builder.exceptions.JaTemMassaException;
+import io.github.lucasduete.padroes.criacionais.builder.exceptions.MassaNãoDefinidaException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +19,15 @@ public class PizzaBuilder {
     }
 
     public PizzaBuilder comMassaPan() {
+        if (tipoMassa != null) throw new JaTemMassaException(this.tipoMassa);
+
         this.tipoMassa = TipoMassaEnum.Pan;
         return this;
     }
 
     public PizzaBuilder comMassaTradicional() {
+        if (tipoMassa != null) throw new JaTemMassaException(this.tipoMassa);
+
         this.tipoMassa = TipoMassaEnum.Tradicional;
         return this;
     }
@@ -57,6 +63,8 @@ public class PizzaBuilder {
     }
 
     public Pizza build() {
+        if (this.tipoMassa == null) throw new MassaNãoDefinidaException();
+
         return new Pizza(this.tipoMassa, this.ingredientes);
     }
 }
